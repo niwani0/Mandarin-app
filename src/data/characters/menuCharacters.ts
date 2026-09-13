@@ -1,0 +1,138 @@
+import type { CharacterItem } from "@/types/content";
+
+/**
+ * Radical assignments here are standard Kangxi radical classifications, not folk etymology.
+ * mnemonicNote is explicitly a memory aid, not a claim about the character's true origin.
+ */
+export const menuCharacters: CharacterItem[] = [
+  {
+    id: "char-wo",
+    hanzi: "我",
+    pinyin: "wǒ",
+    meaning: "I / me",
+    radicals: [{ radical: "戈", meaning: "dagger-axe", pinyin: "gē" }],
+    mnemonicNote: "Picture yourself (我) holding the 戈 shape steady — it recurs in 战 (war) and 战争 (warfare).",
+  },
+  {
+    id: "char-yao",
+    hanzi: "要",
+    pinyin: "yào",
+    meaning: "want / need",
+    radicals: [{ radical: "覀", meaning: "cover (Kangxi radical 146)" }],
+    mnemonicNote: "The 覀 cap sits over the rest of the character — think of it as 'topping the list of what you want'.",
+  },
+  {
+    id: "char-mi",
+    hanzi: "米",
+    pinyin: "mǐ",
+    meaning: "rice (uncooked grain)",
+    radicals: [{ radical: "米", meaning: "rice grains (pictograph)" }],
+    mnemonicNote: "米 looks like scattered grains of rice around a cross.",
+    sharesRadicalWith: ["char-fan"],
+  },
+  {
+    id: "char-fan",
+    hanzi: "饭",
+    pinyin: "fàn",
+    meaning: "cooked rice / meal",
+    radicals: [
+      { radical: "饣", meaning: "food (Kangxi radical 184, from 食)" },
+      { radical: "反", meaning: "phonetic component", pinyin: "fǎn" },
+    ],
+    mnemonicNote: "饣 marks any character about food or eating — you'll see it again on other menu characters.",
+  },
+  {
+    id: "char-shui",
+    hanzi: "水",
+    pinyin: "shuǐ",
+    meaning: "water",
+    radicals: [{ radical: "水", meaning: "water (pictograph)" }],
+    mnemonicNote: "水 looks like flowing water. As a side radical it compresses to 氵, seen in 汤 (soup) and 河 (river).",
+  },
+  {
+    id: "char-cai",
+    hanzi: "菜",
+    pinyin: "cài",
+    meaning: "dish / vegetable",
+    radicals: [
+      { radical: "艹", meaning: "grass (Kangxi radical 140)" },
+      { radical: "采", meaning: "phonetic component", pinyin: "cǎi" },
+    ],
+    mnemonicNote: "艹 on top signals a plant/vegetable — matches the near-identical sound of 采 (cǎi) to 菜 (cài).",
+  },
+  {
+    id: "char-la",
+    hanzi: "辣",
+    pinyin: "là",
+    meaning: "spicy",
+    radicals: [{ radical: "辛", meaning: "bitter / hardship (Kangxi radical 160)" }],
+    mnemonicNote: "辛 (bitter/harsh) sets the tone — think 'harsh on the tongue' for spicy.",
+  },
+  {
+    id: "char-tian",
+    hanzi: "甜",
+    pinyin: "tián",
+    meaning: "sweet",
+    radicals: [
+      { radical: "舌", meaning: "tongue (Kangxi radical 135)" },
+      { radical: "甘", meaning: "sweet", pinyin: "gān" },
+    ],
+    mnemonicNote: "舌 (tongue) + 甘 (sweet) — literally 'tongue tastes sweet'.",
+  },
+  {
+    id: "char-qian",
+    hanzi: "钱",
+    pinyin: "qián",
+    meaning: "money",
+    radicals: [
+      { radical: "钅", meaning: "metal (Kangxi radical 167, from 金)" },
+      { radical: "戋", meaning: "phonetic component", pinyin: "jiān" },
+    ],
+    mnemonicNote: "钅 marks metal/currency — coins were metal, money is 钱.",
+  },
+  {
+    id: "char-xie",
+    hanzi: "谢",
+    pinyin: "xiè",
+    meaning: "thank",
+    radicals: [{ radical: "讠", meaning: "speech (Kangxi radical 149, from 言)" }],
+    mnemonicNote: "讠marks characters about speaking — thanking (谢) is something you say.",
+  },
+  {
+    id: "char-duo",
+    hanzi: "多",
+    pinyin: "duō",
+    meaning: "many / much",
+    radicals: [{ radical: "夕", meaning: "evening (Kangxi radical 36), doubled" }],
+    mnemonicNote: "Two 夕 stacked — 'evening after evening' piling up into 'many'.",
+  },
+  {
+    id: "char-shao",
+    hanzi: "少",
+    pinyin: "shǎo",
+    meaning: "few / little",
+    radicals: [{ radical: "小", meaning: "small (Kangxi radical 42)" }],
+    mnemonicNote: "小 (small) with one extra stroke — 'small' shrinks further into 'few'.",
+  },
+  {
+    id: "char-chi",
+    hanzi: "吃",
+    pinyin: "chī",
+    meaning: "eat",
+    radicals: [{ radical: "口", meaning: "mouth (Kangxi radical 30)" }],
+    mnemonicNote: "口 (mouth) — every eating/drinking/speaking character starts with what your mouth does.",
+    sharesRadicalWith: ["char-he"],
+  },
+  {
+    id: "char-he",
+    hanzi: "喝",
+    pinyin: "hē",
+    meaning: "drink",
+    radicals: [
+      { radical: "口", meaning: "mouth (Kangxi radical 30)" },
+      { radical: "曷", meaning: "phonetic component", pinyin: "hé" },
+    ],
+    mnemonicNote: "Same 口 (mouth) as 吃 — mouth for eating, mouth for drinking too.",
+    sharesRadicalWith: ["char-chi"],
+  },
+];
