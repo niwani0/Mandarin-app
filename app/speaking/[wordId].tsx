@@ -10,7 +10,7 @@ import {
   useAudioRecorderState,
 } from "expo-audio";
 
-import { orderingFoodPatterns } from "@/data/scenarios/orderingFood";
+import { allPatterns } from "@/data/scenarios";
 import { cloudToneFeedbackConfig } from "@/config/toneFeedbackConfig";
 import {
   CloudToneFeedbackService,
@@ -24,7 +24,7 @@ const toneFeedbackService = cloudToneFeedbackConfig
 
 export default function SpeakingPracticeScreen() {
   const { wordId } = useLocalSearchParams<{ wordId: string }>();
-  const item = orderingFoodPatterns.find((p) => p.id === wordId);
+  const item = allPatterns.find((p) => p.id === wordId);
 
   const recorder = useAudioRecorder(RecordingPresets.HIGH_QUALITY);
   const recorderState = useAudioRecorderState(recorder);

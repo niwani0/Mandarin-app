@@ -4,6 +4,7 @@ export const orderingFoodScenario: Scenario = {
   id: "ordering-food",
   title: "Ordering Food",
   description: "Order at a restaurant, ask about dishes, and pay the bill.",
+  icon: "🍜",
 };
 
 export const orderingFoodPatterns: PatternItem[] = [
@@ -16,6 +17,7 @@ export const orderingFoodPatterns: PatternItem[] = [
     contextExample: "我要炒饭。",
     contextExampleTranslation: "I want fried rice.",
     structureNote: "Core want/order pattern: 我要 + [noun]. Swap the noun for any dish.",
+    tier: 1,
   },
   {
     id: "pattern-yifen",
@@ -26,6 +28,7 @@ export const orderingFoodPatterns: PatternItem[] = [
     contextExample: "我要一份饺子。",
     contextExampleTranslation: "I want one order of dumplings.",
     structureNote: "Measure-word slot: 一份 (yí fèn) counts a dish/portion. Note 一 shifts to yí before a 4th-tone word.",
+    tier: 2,
   },
   {
     id: "pattern-you-meiyou",
@@ -36,6 +39,7 @@ export const orderingFoodPatterns: PatternItem[] = [
     contextExample: "有没有素菜？",
     contextExampleTranslation: "Do you have vegetarian dishes?",
     structureNote: "Existence question pattern: 有没有 + [noun]. Generates yes/no questions about availability anywhere, not just food.",
+    tier: 1,
   },
   {
     id: "pattern-bu-chi",
@@ -46,6 +50,7 @@ export const orderingFoodPatterns: PatternItem[] = [
     contextExample: "我不吃辣的。",
     contextExampleTranslation: "I don't eat spicy food.",
     structureNote: "Negation pattern: 不 + verb, here 吃 (eat). Same slot works for dietary restrictions or allergies.",
+    tier: 2,
   },
   {
     id: "pattern-tai-le",
@@ -56,6 +61,7 @@ export const orderingFoodPatterns: PatternItem[] = [
     contextExample: "太辣了！",
     contextExampleTranslation: "It's too spicy!",
     structureNote: "太 + [adjective] + 了 wraps around any adjective to mean 'too X'. Reusable everywhere, not just food.",
+    tier: 1,
   },
   {
     id: "pattern-duoshao-qian",
@@ -66,6 +72,7 @@ export const orderingFoodPatterns: PatternItem[] = [
     contextExample: "这个多少钱？——三十五块。",
     contextExampleTranslation: "How much is this? — 35 yuan.",
     structureNote: "Price question pattern: [item] + 多少钱. Swap 这个 for any noun.",
+    tier: 1,
   },
   {
     id: "pattern-maidan",
@@ -76,6 +83,7 @@ export const orderingFoodPatterns: PatternItem[] = [
     contextExample: "服务员，买单！",
     contextExampleTranslation: "Waiter, check please!",
     structureNote: "Fixed request phrase — both versions are interchangeable across most of China.",
+    tier: 1,
   },
   {
     id: "pattern-fuwuyuan",
@@ -86,5 +94,6 @@ export const orderingFoodPatterns: PatternItem[] = [
     contextExample: "服务员，有没有菜单？",
     contextExampleTranslation: "Waiter, do you have a menu?",
     structureNote: "Direct address to get staff attention — combine with 有没有 pattern above.",
+    tier: 2,
   },
 ];

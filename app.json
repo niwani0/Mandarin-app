@@ -10,11 +10,14 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
+      "bundleIdentifier": "com.mandarintravel.personal",
       "infoPlist": {
-        "NSMicrophoneUsageDescription": "Used to record you speaking Mandarin so the app can give you tone/pronunciation feedback."
+        "NSMicrophoneUsageDescription": "Used to record you speaking Mandarin so the app can give you tone/pronunciation feedback.",
+        "ITSAppUsesNonExemptEncryption": false
       }
     },
     "android": {
+      "package": "com.mandarintravel.personal",
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/android-icon-foreground.png",

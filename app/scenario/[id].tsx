@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
-import { useLocalSearchParams, useRouter } from "expo-router";
+import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useSQLiteContext } from "expo-sqlite";
 import * as Speech from "expo-speech";
 
-import { orderingFoodPatterns, orderingFoodScenario } from "@/data/scenarios/orderingFood";
+import { getPatternsForScenario, getScenario } from "@/data/scenarios";
 import type { PatternItem, TeachingMethod } from "@/types/content";
 import { buildSessionQueue, logAttempt } from "@/db/repository";
 import { getMethodConfidence, recordMethodOutcome, selectMethod } from "@/engine/adaptiveEngine";
@@ -23,14 +23,17 @@ export default function ScenarioScreen() {
   const [revealed, setRevealed] = useState(false);
   const [promptStartedAt, setPromptStartedAt] = useState(0);
 
-  const allPatterns = id === orderingFoodScenario.id ? orderingFoodPatterns : [];
+  const scenario = id ? getScenario(id) : undefined;
+  const allPatterns = id ? getPatternsForScenario(id) : [];
   const currentItem: PatternItem | undefined = queue ? allPatterns.find((p) => p.id === queue[index]) : undefined;
 
   useEffect(() => {
     (async () => {
       const ids = allPatterns.map((p) => p.id);
-      const sessionQueue = await buildSessionQueue(db, ids, SESSION_SIZE);
+      const tierById = new Map(allPatterns.map((p) => [p.id, p.tier]));
+      const sessionQueue = await buildSessionQueue(db, ids, SESSION_SIZE, tierById);
       setQueue(sessionQueue);
+      setIndex(0);
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
@@ -47,9 +50,18 @@ export default function ScenarioScreen() {
     if (currentItem) startPrompt();
   }, [currentItem, startPrompt]);
 
+  if (!scenario) {
+    return (
+      <View style={styles.center}>
+        <Text>Unknown scenario.</Text>
+      </View>
+    );
+  }
+
   if (!queue) {
     return (
       <View style={styles.center}>
+        <Stack.Screen options={{ title: scenario.title }} />
         <Text>Loading session…</Text>
       </View>
     );
@@ -58,6 +70,7 @@ export default function ScenarioScreen() {
   if (!currentItem || !method) {
     return (
       <View style={styles.center}>
+        <Stack.Screen options={{ title: scenario.title }} />
         <Text style={styles.doneTitle}>Session complete</Text>
         <Text style={styles.doneSubtitle}>Nothing else due right now — come back later.</Text>
         <Pressable style={styles.primaryButton} onPress={() => router.back()}>
@@ -88,6 +101,7 @@ export default function ScenarioScreen() {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      <Stack.Screen options={{ title: scenario.title }} />
       <Text style={styles.progressLabel}>
         {index + 1} / {queue.length}
       </Text>

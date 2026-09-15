@@ -27,7 +27,8 @@ export default function CharactersScreen() {
   useEffect(() => {
     (async () => {
       const ids = menuCharacters.map((c) => c.id);
-      setQueue(await buildSessionQueue(db, ids, SESSION_SIZE));
+      const tierById = new Map(menuCharacters.map((c) => [c.id, c.tier]));
+      setQueue(await buildSessionQueue(db, ids, SESSION_SIZE, tierById));
     })();
   }, [db]);
 

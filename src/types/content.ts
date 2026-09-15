@@ -15,6 +15,14 @@ export const METHODS_BY_TYPE: Record<ItemType, TeachingMethod[]> = {
   character: ["radical_decomposition", "flashcard_standard", "mnemonic_story"],
 };
 
+/**
+ * Frequency/essentialness tier, independent of which scenario an item lives in or when
+ * it was introduced. 1 = should basically never be a gap (你好, 谢谢, 我要); 2 = common
+ * but more situational; 3 = useful but lower-priority. Used to prioritize new-item order
+ * and to detect "patchy" mastery — e.g. tier-1 gaps sitting alongside solid tier-3 items.
+ */
+export type FrequencyTier = 1 | 2 | 3;
+
 /** A sentence-pattern template, e.g. "我要 ___" (I want ___). */
 export interface PatternItem {
   id: string;
@@ -27,6 +35,7 @@ export interface PatternItem {
   contextExampleTranslation: string;
   /** What structural slot this pattern teaches, e.g. "existence question: 有没有 + noun". */
   structureNote: string;
+  tier: FrequencyTier;
 }
 
 export interface RadicalRef {
@@ -46,10 +55,12 @@ export interface CharacterItem {
   mnemonicNote: string;
   /** Other characters in this content set that share a radical, for pattern reinforcement. */
   sharesRadicalWith?: string[];
+  tier: FrequencyTier;
 }
 
 export interface Scenario {
   id: string;
   title: string;
   description: string;
+  icon: string;
 }
