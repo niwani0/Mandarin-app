@@ -22,6 +22,22 @@ not Duolingo-style gamification. See design rationale below.
   that share a component, instead of rote-memorizing each character independently.
 - **No streaks, no guilt mechanics.** The home screen shows competence (% of items you've
   demonstrated durable recall on) rather than a streak counter.
+- **Per-item calibration, not one global level.** Real skill is rarely a single number —
+  someone can be solid on intermediate patterns and still blank on a basic one. Every item
+  (`src/types/content.ts`'s `FrequencyTier`) is tagged 1 (essential) through 3 (situational),
+  independent of when it was introduced. `/calibrate` lets you mark items you already know so
+  the SRS queue starts from your actual baseline instead of zero, and new items are queued
+  tier-first (`buildSessionQueue` in `src/db/repository.ts`) so a gap in something simple
+  surfaces before rarer material. The home screen's "Patchy spot detected" card
+  (`computeTierCompetence`) flags it directly when tier-1 competence lags behind tier-3 —
+  the exact "good at some things, missing simple words" pattern this was built around.
+
+## Scenarios
+
+Ordering Food, Hotel, Transportation & Booking, and Small Talk — each a set of reusable
+sentence-pattern templates (not fixed phrases) tagged by tier, in `src/data/scenarios/`.
+Adding a new scenario is: a new file exporting a `Scenario` + `PatternItem[]`, registered in
+`src/data/scenarios/index.ts`.
 
 ## What's real vs. placeholder
 
@@ -45,20 +61,44 @@ bundled in the app, the adaptive engine and SRS scheduler run against local SQLi
 `expo-speech` text-to-speech uses the on-device engine. Tone feedback needs connectivity
 once a real cloud provider is wired in.
 
-## Running it
+## Running it (personal use, no App Store)
 
+This is not published anywhere and doesn't need to be — `app.json` sets a placeholder iOS
+bundle identifier (`com.mandarintravel.personal`) which is enough for any of these paths.
+Swap it for your own reverse-DNS string if you ever build a standalone binary.
+
+**Fastest: Expo Go.** No Xcode, no Apple account needed.
 ```sh
 npm install
-npm run start   # then open in Expo Go, or npm run ios / npm run android
+npm run start   # scan the QR code with the Expo Go app on your iPhone
 ```
+Everything in this app (expo-router, expo-sqlite, expo-audio, expo-speech) is part of the
+standard Expo SDK, so it runs in Expo Go with no custom native code required.
+
+**Standalone on your own phone, no App Store review:** `eas build --platform ios --profile
+development` (or `preview` for ad-hoc) via `eas-cli`, with a free Apple ID for a 7-day
+on-device install, or a paid Apple Developer Program membership ($99/yr) for ad-hoc
+distribution that doesn't expire weekly. Only worth it once you want the app to have its own
+icon instead of running inside Expo Go.
+
+## Offline behavior on iOS
+
+Recording uses `expo-audio`'s `AudioRecorder`; `NSMicrophoneUsageDescription` is set in
+`app.json`. Text-to-speech (`expo-speech`) uses iOS's on-device voice — fully offline, no
+data usage, works the same on a plane or with no SIM. SQLite (adaptive engine, SRS state,
+calibration) is entirely local. The only thing that needs connectivity is cloud tone
+feedback once that's wired in (see above) — everything else works with the phone in
+airplane mode.
 
 ## Project layout
 
 ```
 app/                    expo-router screens (file-based routing)
+app/calibrate.tsx       placement flow — mark known items, seeds SRS baseline
 src/db/                 SQLite schema + repository queries
 src/engine/             adaptive method-selection + spaced-repetition scheduler
 src/services/           pluggable tone-feedback interface
-src/data/               seed content (Ordering Food scenario, menu characters)
-src/types/              shared content types
+src/data/scenarios/     Ordering Food, Hotel, Transportation, Small Talk
+src/data/characters/    menu/sign character radical-decomposition set
+src/types/              shared content types (incl. FrequencyTier)
 ```
