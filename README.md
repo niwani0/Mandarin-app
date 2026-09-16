@@ -32,6 +32,15 @@ not Duolingo-style gamification. See design rationale below.
   (`computeTierCompetence`) flags it directly when tier-1 competence lags behind tier-3 —
   the exact "good at some things, missing simple words" pattern this was built around.
 
+- **Live AI conversation practice.** Fixed drilling has a ceiling — real conversational
+  adequacy needs actual back-and-forth dialogue. `/conversation/[scenarioId]` runs a
+  roleplay with an LLM partner via `src/services/conversationService.ts`. The system
+  prompt (`src/engine/conversationPrompt.ts`) is built from the same review data as
+  everything else: it tells the model what you're already solid on and what's shaky, so
+  the conversation leans on known material and stretches gently instead of firehosing
+  unfamiliar vocabulary. See "Conversation practice setup" below — this is the one
+  feature that needs an API key and a deployed proxy.
+
 ## Scenarios
 
 Ordering Food, Hotel, Transportation & Booking, and Small Talk — each a set of reusable
@@ -45,7 +54,7 @@ Everything above is fully wired and working, including the local SQLite-backed a
 engine and spaced-repetition scheduler — verified with a clean `tsc --noEmit` and a
 successful Metro bundle (`expo export`).
 
-**Tone/pronunciation feedback is the one placeholder.** Real tone scoring needs
+**Tone/pronunciation feedback is one placeholder.** Real tone scoring needs
 pitch-contour analysis against reference audio, not just speech-to-text, which means
 picking an actual Mandarin pronunciation-assessment provider (Azure Speech, iFlytek, Baidu,
 etc.) and wiring in real credentials. `src/services/toneFeedback.ts` defines the interface
@@ -53,6 +62,24 @@ and a `CloudToneFeedbackService` that throws until configured; until a provider 
 the app uses `LocalHeuristicToneFeedbackService`, which is explicitly a placeholder — it
 does not analyze the actual recording. Fill in `src/config/toneFeedbackConfig.ts` once a
 provider is picked.
+
+**Conversation practice is the other — it's built, but requires setup before it works.**
+`src/config/conversationConfig.ts` is `null` by default, and the screen shows a clear
+"not set up yet" error rather than crashing until you deploy the proxy and fill it in.
+See "Conversation practice setup" below.
+
+## Conversation practice setup
+
+1. Deploy the Cloudflare Worker proxy — full steps in
+   [`server/conversation-proxy/README.md`](./server/conversation-proxy/README.md). Takes
+   about 5 minutes; needs an Anthropic API key (separate from any claude.ai subscription,
+   billed per request).
+2. Fill in `src/config/conversationConfig.ts` with the deployed Worker URL and the shared
+   secret you set on it.
+3. **Not verified reachable from mainland China in this build** — Cloudflare's history
+   there is inconsistent. Test it from an actual China-based connection (with whatever
+   VPN you'd normally use while traveling) before relying on it mid-trip. Everything else
+   in the app doesn't have this problem, since it never leaves the phone.
 
 ## Offline behavior
 
@@ -95,9 +122,11 @@ airplane mode.
 ```
 app/                    expo-router screens (file-based routing)
 app/calibrate.tsx       placement flow — mark known items, seeds SRS baseline
+app/conversation/       live AI roleplay chat screen
+server/conversation-proxy/  Cloudflare Worker holding the Anthropic API key server-side
 src/db/                 SQLite schema + repository queries
-src/engine/             adaptive method-selection + spaced-repetition scheduler
-src/services/           pluggable tone-feedback interface
+src/engine/             adaptive method-selection, SRS scheduler, conversation prompt builder
+src/services/           pluggable tone-feedback + conversation-service interfaces
 src/data/scenarios/     Ordering Food, Hotel, Transportation, Small Talk
 src/data/characters/    menu/sign character radical-decomposition set
 src/types/              shared content types (incl. FrequencyTier)

@@ -73,8 +73,11 @@ export default function ScenarioScreen() {
         <Stack.Screen options={{ title: scenario.title }} />
         <Text style={styles.doneTitle}>Session complete</Text>
         <Text style={styles.doneSubtitle}>Nothing else due right now — come back later.</Text>
-        <Pressable style={styles.primaryButton} onPress={() => router.back()}>
-          <Text style={styles.primaryButtonText}>Back to home</Text>
+        <Pressable style={styles.primaryButton} onPress={() => router.push(`/conversation/${scenario.id}`)}>
+          <Text style={styles.primaryButtonText}>Try a real conversation</Text>
+        </Pressable>
+        <Pressable onPress={() => router.back()}>
+          <Text style={styles.speakPracticeLink}>Back to home</Text>
         </Pressable>
       </View>
     );

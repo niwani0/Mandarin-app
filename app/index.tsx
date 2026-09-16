@@ -91,7 +91,7 @@ export default function HomeScreen() {
       {scenarios.map((scenario) => {
         const progress = scenarioProgress.find((p) => p.scenarioId === scenario.id);
         return (
-          <Card key={scenario.id} onPress={() => router.push(`/scenario/${scenario.id}`)}>
+          <View key={scenario.id} style={styles.scenarioCard}>
             <Text style={styles.cardTitle}>
               {scenario.icon} {scenario.title}
             </Text>
@@ -100,7 +100,18 @@ export default function HomeScreen() {
             <Text style={styles.cardMeta}>
               {Math.round((progress?.competence ?? 0) * 100)}% solid · {progress?.due ?? 0} due for review
             </Text>
-          </Card>
+            <View style={styles.scenarioActions}>
+              <Pressable style={styles.scenarioActionBtn} onPress={() => router.push(`/scenario/${scenario.id}`)}>
+                <Text style={styles.scenarioActionText}>Drill</Text>
+              </Pressable>
+              <Pressable
+                style={[styles.scenarioActionBtn, styles.scenarioActionPrimary]}
+                onPress={() => router.push(`/conversation/${scenario.id}`)}
+              >
+                <Text style={[styles.scenarioActionText, styles.scenarioActionTextPrimary]}>Conversation</Text>
+              </Pressable>
+            </View>
+          </View>
         );
       })}
 
@@ -142,6 +153,28 @@ const styles = StyleSheet.create({
   cardTitle: { fontSize: 18, fontWeight: "600", color: "#1C1917" },
   cardSubtitle: { fontSize: 14, color: "#57534E", marginTop: 2, marginBottom: 12 },
   cardMeta: { fontSize: 13, color: "#78716C", marginTop: 8 },
+  scenarioCard: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: 16,
+    padding: 16,
+    shadowColor: "#000",
+    shadowOpacity: 0.05,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 2,
+  },
+  scenarioActions: { flexDirection: "row", gap: 8, marginTop: 12 },
+  scenarioActionBtn: {
+    flex: 1,
+    paddingVertical: 9,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: "#D6D3D1",
+    alignItems: "center",
+  },
+  scenarioActionPrimary: { backgroundColor: "#2E4AA0", borderColor: "#2E4AA0" },
+  scenarioActionText: { fontSize: 13, fontWeight: "600", color: "#57534E" },
+  scenarioActionTextPrimary: { color: "#fff" },
   insightBox: { backgroundColor: "#EFF6FF", borderRadius: 12, padding: 16, gap: 4 },
   insightTitle: { fontWeight: "600", color: "#1E3A8A", marginBottom: 4 },
   insightLine: { color: "#1E40AF", fontSize: 14 },
