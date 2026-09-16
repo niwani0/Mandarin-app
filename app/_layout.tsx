@@ -17,6 +17,7 @@ export default function RootLayout() {
             <Stack.Screen name="characters/index" options={{ title: "Characters" }} />
             <Stack.Screen name="speaking/[wordId]" options={{ title: "Speaking Practice" }} />
             <Stack.Screen name="calibrate" options={{ title: "Calibration" }} />
+            <Stack.Screen name="conversation/[scenarioId]" options={{ title: "Conversation" }} />
           </Stack>
         </SQLiteProvider>
       </SafeAreaProvider>
